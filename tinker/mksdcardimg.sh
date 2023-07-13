@@ -1,7 +1,7 @@
 #!/bin/sh
 BOOT=./out/sdcard.img
 \rm ${BOOT}
-dd if=/dev/zero of=${BOOT} bs=1M count=0 seek=6144
+dd if=/dev/zero of=${BOOT} bs=1M count=0 seek=7168
 parted -s ${BOOT} mklabel gpt
 parted -s ${BOOT} unit s mkpart boot 8192 139263
 parted -s ${BOOT} set 1 boot on
