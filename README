@@ -69,14 +69,14 @@ Steps to build Debian Buster lxde sdcard image:
 
    sudo dd if=./out/sdcard.img of=/dev/sda bs=4096 conv=notrunc,fsync
 
-Plugin USB Headphone to tinker.
+Plugin bluetooth usb dongle to SBC.
+Plugin wifi usb dongle to rk3328.
 Plugin sdcard to SBC
 Login:
 Username: linaro
 Password: linaro
 uname -a
 lsb_release -a
-Setup wifi for rk3328: plugin usb wifi dongle
 sudo ifconfig
 sudo dpkg-reconfigure tzdata
 sudo dpkg-reconfigure locales
@@ -84,7 +84,8 @@ date
 sudo apt update
 sudo apt upgrade
 sync
-sudo reboot
+sudo shutdown -h now
+Power off, power on
 Disable power saving and screen saver.
 glxinfo | grep OpenGL
 date
@@ -92,6 +93,7 @@ date
 sudo apt install speedtest-cli build-essential libjpeg-dev libpng-dev libpng16-16 pkg-config libx11-dev python3-pip python3-setuptools chromium chromium-sandbox ffmpeg mpv git
 
 speedtest-cli
+For rk3328: speedtest-cli --secure
 
 git clone https://github.com/glmark2/glmark2.git -b 2021.02
 cd glmark2
@@ -105,6 +107,11 @@ Chromium -> youtube.com -> search YmDNhi07_Ho
 pip3 install --no-deps -U yt-dlp
 ~/.local/bin/yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]' hyUhEjtlDLA -o avemaria.mp4
 mpv avemaria.mp4
+
+sudo rfkill list
+hciconfig hci0
+hcitool dev
+hciconfig -a
 
 For rpi4b, install mesa and drm in buster:
 sudo apt-get remove meson
@@ -125,6 +132,7 @@ git clone --depth=1 https://gitlab.freedesktop.org/mesa/drm
 cd drm; mkdir build; cd build;
 sudo meson --prefix="/usr" ..
 sudo ninja install
+sync
 sudo reboot
 glxinfo |grep OpenGL
 glmark2-es2
@@ -134,3 +142,8 @@ Chromium -> youtube.com -> search YmDNhi07_Ho
 pip3 install --no-deps -U yt-dlp
 ~/.local/bin/yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]' hyUhEjtlDLA -o avemaria.mp4
 mpv avemaria.mp4
+
+sudo rfkill list
+hciconfig hci0
+hcitool dev
+hciconfig -a

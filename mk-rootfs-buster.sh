@@ -64,6 +64,7 @@ ln -sf /etc/resolvconf/run/resolv.conf /etc/resolv.conf
 resolvconf -u
 apt-get update
 apt-get upgrade -y
+apt-get install -y build-essential git wget dkms
 
 chmod o+x /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 chmod +x /etc/rc.local
@@ -71,7 +72,7 @@ chmod +x /etc/rc.local
 if [ "$BOARD" != "rpi4b" ]; then
 dpkg -i /packages/xserver/*.deb
 apt-get install -f -y
-apt-get install -y libinput-bin libinput10 xserver-xorg-input-all xserver-xorg-input-libinput
+# apt-get install -y libinput-bin libinput10 xserver-xorg-input-all xserver-xorg-input-libinput
 fi
 
 if [ "$BOARD" == "radxa" ]; then
@@ -82,10 +83,14 @@ apt-get install -f -y
 mkdir /vendor
 mkdir /vendor/etc
 ln -sf /system/etc/firmware /vendor/etc/
+#sed 's/^exit 0/brcm_patchram_plus1 -d --enable_hci --no2bytes --use_baudrate_for_downloade --tosleep  200000 --baudrate 1500000 --patchram \/system\/etc\/firmware\/BCM4345C5.hcd \/dev\/ttyS0 > \/dev\/null 2>\&1  \&\nexit 0/' /etc/rc.local > rclocal
+#mv rclocal /etc/rc.local
+#chmod +x /etc/rc.local
+#systemctl enable rc-local.service
 elif [ "$BOARD" == "rpi4b" ]; then
 #------------------rpiwifi-------------
 echo -e "\033[36m Install rpiwifi..................... \033[0m"
-dpkg -i /packages/rpiwifi/firmware-brcm80211_20190114-2_all.deb
+dpkg -i /packages/rpiwifi/firmware-brcm80211_20210315-3_all.deb
 cp /packages/rpiwifi/brcmfmac43455-sdio.txt /lib/firmware/brcm/
 apt-get install -f -y
 fi

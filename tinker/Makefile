@@ -52,7 +52,6 @@ prebuild:
 
 buildrootfs:
 	\cp -rf $(PWD)/../customization/* config/
-	\cp $(PWD)/../linaro-list-armhf config/package-lists/linaro.list.chroot
 	sudo lb build
 
 postbuild:
